@@ -1,45 +1,573 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="Let's connect">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="JomiJoy Chat: Live Video Call">
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <title>JomiJoy Chat: Live Video Call</title>
+    <link rel="manifest" href="manifest.json">
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <!-- PWA Install Page Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <!-- Add this to your existing <head> section -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Your App Name">
-  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-  <base href="/">
+        .install-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            margin: 20px;
+        }
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: #2196F3;
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="demo_one">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+        .app-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+        .app-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
 
-  <title>demo_one</title>
-  <link rel="manifest" href="manifest.json">
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .status-pwa {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+
+        .status-browser {
+            background: #fff3e0;
+            color: #f57f17;
+            border: 1px solid #ff9800;
+        }
+
+        .status-ready {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #2196f3;
+        }
+
+        .install-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            min-width: 200px;
+        }
+
+        .install-button:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .install-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .continue-button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .continue-button:hover {
+            background: #45a049;
+        }
+
+        .skip-button {
+            background: none;
+            color: #666;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .ios-instructions {
+            background: #f0f8ff;
+            border: 1px solid #87ceeb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .ios-instructions h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+
+        .ios-instructions ol {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        #flutterContainer {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #000;
+        }
+
+        /* Flutter Loading Screen */
+        .flutter-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .flutter-loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .flutter-loading-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .flutter-loading-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1861088234463782');
+        fbq('track', 'PageView');
+
+        function trackCustomEvent(eventName) {
+            console.log(eventName);
+            fbq('trackCustom', eventName);
+        }
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=1861088234463782&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+
+<!-- PWA Install Page -->
+<div id="pwaInstallPage" class="install-container">
+    <!-- App Icon -->
+    <div class="app-icon">📱</div>
+
+    <!-- App Info -->
+    <div class="app-title">JomiJoy Chat</div>
+    <div class="app-description">Live Video Call & Chat</div>
+
+    <!-- Status Message -->
+    <div id="statusMessage" class="status-message status-browser">
+        🌐 Running in browser mode
+    </div>
+
+    <!-- Install Button -->
+    <button id="installButton" class="install-button hidden" onclick="installApp()">
+        <span id="installButtonText">Install App</span>
+    </button>
+
+    <!-- iOS Instructions -->
+    <div id="iosInstructions" class="ios-instructions hidden">
+        <h3>Install on iOS:</h3>
+        <ol>
+            <li>Tap the <strong>Share</strong> button in Safari</li>
+            <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+            <li>Tap <strong>"Add"</strong> to confirm</li>
+        </ol>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="margin-top: 30px;">
+        <button class="continue-button" onclick="continueToApp()">Continue to App</button>
+        <br>
+        <button class="skip-button" onclick="continueToApp()">Skip for now</button>
+    </div>
+</div>
+
+<!-- Flutter App Container -->
+<div id="flutterContainer" class="hidden">
+    <!-- Flutter Loading Screen -->
+    <div id="flutterLoading" class="flutter-loading">
+        <div class="flutter-loading-logo">📱</div>
+        <div class="flutter-loading-spinner"></div>
+        <div class="flutter-loading-text">Loading JomiJoy Chat...</div>
+    </div>
+    <!-- Flutter app will load here -->
+</div>
+
+<!-- PWA Install Logic -->
+<script>
+    let deferredPrompt;
+    let launchMode = 'browser';
+    let hasPrompt = false;
+    let isInstalled = false;
+
+    // UI Elements
+    const statusMessage = document.getElementById('statusMessage');
+    const installButton = document.getElementById('installButton');
+    const installButtonText = document.getElementById('installButtonText');
+    const iosInstructions = document.getElementById('iosInstructions');
+
+    // Flutter Integration Functions
+    window.showLoader = function() {
+        console.log('showLoader called');
+        const flutterLoading = document.getElementById('flutterLoading');
+        if (flutterLoading) {
+            flutterLoading.style.display = 'flex';
+        }
+    };
+
+    window.hideLoader = function() {
+        console.log('hideLoader called');
+        const flutterLoading = document.getElementById('flutterLoading');
+        if (flutterLoading) {
+            flutterLoading.style.display = 'none';
+        }
+    };
+
+    // Check if PWA is installed (even when in browser)
+    function checkIfPWAInstalled() {
+        // Quick check - if PWA was installed before, skip install page immediately
+        const pwaInstalled = localStorage.getItem('pwa_installed');
+        if (pwaInstalled === 'true') {
+            console.log('PWA detected as installed - redirecting to Flutter app immediately');
+            isInstalled = true;
+            // Hide install page immediately and go to Flutter app
+            document.getElementById('pwaInstallPage').style.display = 'none';
+            loadFlutterApp();
+            return;
+        }
+
+        // If no localStorage flag, do async check but don't block
+        if ('getInstalledRelatedApps' in navigator) {
+            navigator.getInstalledRelatedApps().then(apps => {
+                if (apps.length > 0) {
+                    console.log('PWA found via API - updating localStorage');
+                    localStorage.setItem('pwa_installed', 'true');
+                    // Don't redirect here as user might already be using the page
+                }
+            }).catch(err => {
+                console.log('Could not check installed apps:', err);
+            });
+        }
+    }
+
+
+
+    // Check if running as PWA
+    function isPWA() {
+        // Multiple checks for PWA detection
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+        const isInWebAppiOS = (window.navigator.standalone == true);
+        const isInWebAppChrome = (window.matchMedia('(display-mode: standalone)').matches);
+
+        return isStandalone || isInWebAppiOS || isInWebAppChrome;
+    }
+
+    // Detect launch mode
+    function detectLaunchMode() {
+        if (isPWA()) {
+            launchMode = 'pwa';
+            isInstalled = true;
+            console.log('App launched as PWA - going directly to Flutter app');
+            trackCustomEvent('App_Launched_As_PWA');
+
+            // Hide install page immediately and go to Flutter app
+            document.getElementById('pwaInstallPage').style.display = 'none';
+            loadFlutterApp();
+            return;
+        }
+
+        // Running in browser - immediately check if PWA is installed
+        launchMode = 'browser';
+        console.log('App launched in browser - checking if PWA is installed');
+        trackCustomEvent('App_Launched_In_Browser');
+
+        // Immediate check for PWA installation
+        checkIfPWAInstalled();
+
+        // Only show UI if PWA is not installed
+        if (!isInstalled) {
+            updateUI();
+        }
+    }
+
+    // Update UI for browser mode only
+    function updateUI() {
+        if (hasPrompt) {
+            statusMessage.className = 'status-message status-ready';
+            statusMessage.innerHTML = '📱 Ready to install as PWA';
+            installButton.classList.remove('hidden');
+            installButtonText.textContent = 'Install App';
+        } else {
+            statusMessage.className = 'status-message status-browser';
+
+            // Check if iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            if (isIOS) {
+                statusMessage.innerHTML = '🍎 Running in Safari - Install manually';
+                iosInstructions.classList.remove('hidden');
+                installButton.classList.add('hidden');
+            } else {
+                statusMessage.innerHTML = '🌐 Running in browser mode';
+                installButton.classList.add('hidden');
+            }
+        }
+    }
+
+    // Install PWA function
+    async function installApp() {
+        if (!deferredPrompt) {
+            console.log('No install prompt available');
+            return;
+        }
+
+        // Show loading state
+        installButtonText.textContent = 'Installing...';
+        installButton.disabled = true;
+
+        try {
+            // Show install prompt
+            deferredPrompt.prompt();
+
+            // Wait for user choice
+            const { outcome } = await deferredPrompt.userChoice;
+
+            console.log(`User response: ${outcome}`);
+
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+                trackCustomEvent('PWA_Install_Accepted');
+
+                statusMessage.className = 'status-message status-pwa';
+                statusMessage.innerHTML = '✅ Installing... PWA will open automatically';
+
+            } else {
+                console.log('User dismissed the install prompt');
+                trackCustomEvent('PWA_Install_Dismissed');
+
+                // Reset button
+                installButtonText.textContent = 'Install App';
+                installButton.disabled = false;
+            }
+
+        } catch (error) {
+            console.error('Error during installation:', error);
+            installButtonText.textContent = 'Install App';
+            installButton.disabled = false;
+        }
+
+        // Clean up
+        deferredPrompt = null;
+        hasPrompt = false;
+    }
+
+    // Continue to main app (browser version)
+    function continueToApp() {
+        trackCustomEvent('Continue_To_App_Clicked');
+
+        // Hide the install page
+        document.getElementById('pwaInstallPage').style.display = 'none';
+
+        // Load Flutter app
+        loadFlutterApp();
+    }
+
+    // Load Flutter application
+    function loadFlutterApp() {
+        console.log('Loading Flutter app...');
+
+        // Show Flutter container
+        const flutterContainer = document.getElementById('flutterContainer');
+        flutterContainer.classList.remove('hidden');
+
+        // Load Flutter bootstrap
+        const script = document.createElement('script');
+        script.src = 'flutter_bootstrap.js';
+        script.async = true;
+        script.onload = () => {
+            console.log('Flutter bootstrap loaded');
+        };
+        script.onerror = () => {
+            console.error('Failed to load Flutter bootstrap');
+        };
+        document.head.appendChild(script);
+    }
+
+    // Event Listeners
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('beforeinstallprompt event fired');
+        e.preventDefault(); // Prevent default mini-infobar
+
+        deferredPrompt = e;
+        hasPrompt = true;
+
+        console.log('Install prompt is available');
+        trackCustomEvent('PWA_Install_Prompt_Available');
+
+        // Update UI to show install button (only if PWA not already installed)
+        if (!isInstalled) {
+            updateUI();
+        }
+    });
+
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed successfully');
+
+        isInstalled = true;
+        launchMode = 'pwa';
+        deferredPrompt = null;
+        hasPrompt = false;
+
+        // Mark PWA as installed in localStorage for future checks
+        localStorage.setItem('pwa_installed', 'true');
+
+        trackCustomEvent('PWA_App_Installed');
+
+        statusMessage.className = 'status-message status-pwa';
+        statusMessage.innerHTML = '🎉 PWA installed! It will open automatically...';
+        installButton.classList.add('hidden');
+
+        // Don't redirect - let the PWA open naturally
+        // The browser tab can be closed or the PWA will open in a new window
+    });
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        detectLaunchMode();
+
+        // Only show install UI if in browser mode and PWA not installed
+        setTimeout(() => {
+            if (!isPWA() && !isInstalled) {
+                updateUI();
+            }
+        }, 500);
+    });
+
+    // Export functions for compatibility
+    window.promptInstall = installApp;
+    window.getLaunchMode = detectLaunchMode;
+
+    console.log('PWA Install Page ready');
+</script>
 </body>
 </html>

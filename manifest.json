@@ -1,13 +1,24 @@
 {
-    "name": "demo_one",
-    "short_name": "demo_one",
-    "start_url": ".",
+    "name": "Thriveo PWA",
+    "short_name": "Thriveo",
+    "description": "Thriveo A Progressive Web App",
+    "start_url": "/",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#ffffff",
+    "theme_color": "#25A479",
+    "id": "/",
+    "scope": "/",
+    "lang": "en-US",
+    "dir": "ltr",
     "orientation": "portrait-primary",
-    "prefer_related_applications": false,
+    "display_override": [
+        "window-controls-overlay",
+        "minimal-ui"
+    ],
+    "categories": [
+        "business",
+        "productivity"
+    ],
     "icons": [
         {
             "src": "icons/Icon-192.png",
